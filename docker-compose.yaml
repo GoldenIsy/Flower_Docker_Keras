@@ -3,14 +3,14 @@ services:
   server:
     image: flwr_server_keras
     volumes:
-      - '\docker\fishdata.pkl:/app'
+      - '<datset example: "\docker\fishdata.pkl">:/app'
     container_name: server
     networks:
       - flower
   client:
     image: flwr_client_keras
     volumes:
-      - '\docker\fishdata.pkl:/app'
+      - '<datset>:/app'
     container_name: client
     networks:
       - flower
