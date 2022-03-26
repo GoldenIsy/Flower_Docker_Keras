@@ -6,7 +6,7 @@ The Problem is the Connection between the Client and Server
 
 Both Docker-Compose and the Run function should work, but are unabel to build an connection.
 Due to Size of my testDataset I was not able to upload it in the moment. Mine was placed under data.
-Please select provide the path to your dataset under "manyrun.sh" or in Docker-compse (replace <dataset> with path)
+Please provide the path to your dataset under "manyrun.sh" or in Docker-compse (replace <dataset> with path)
 
 
 How to run:
