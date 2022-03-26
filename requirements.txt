@@ -1,0 +1,6 @@
+flwr
+tensorflow-cpu
+joblib
+scikit-learn
+clearml
+keras
