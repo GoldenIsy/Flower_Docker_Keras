@@ -11,7 +11,7 @@ Please select provide the path to your dataset under "manyrun.sh" or in Docker-c
 
 How to run:
 After building the Docker Images in the Main folder and the Server folder (simply with the build.bat)
-you can run the "manyrun.sh" (after choosing a Dataset) or use Docker-compose up.
+you can run the "manyrun.sh" or use Docker-compose up.
 
 
 Current Error:
