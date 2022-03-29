@@ -7,7 +7,7 @@ import tensorflow as tf
 import flwr as fl
 
 
-### Edit
+### Edit Manuel
 import joblib
 import math
 from sklearn.model_selection import train_test_split
@@ -102,61 +102,30 @@ def main() -> None:
     )
     model.compile("adam", "sparse_categorical_crossentropy", metrics=["accuracy"])
 
-
-    # Load a subset of Data to simulate the local data partition
+    ##LoadData
+    Load a subset of Data to simulate the local data partition
     print("Partition:" + str(args.partition) + "Clients: " + str(args.clients))
-     
-    
-    (x_train, y_train), (x_test, y_test) = load_partition(args.partition, args.clients)
+    (x_train, y_train), (x_test, y_test) = load_partition(args.partition)
     print("Partition:" + str(args.partition) + " geladen.")
 
     # Start Flower client
     client = CifarClient(model, x_train, y_train, x_test, y_test)
    
    
-    #Server Connection
+    #Server Verbindung
     #fl.app.start_client(args.grpc_server_address, args.grpc_server_port, client)
-    fl.client.start_numpy_client('localhost:8085', client=client)
+    fl.client.start_numpy_client('server:8080', client=client)
 
-def load_partition(idx: int, numClients: int):
+def load_partition(idx: int):
     """Load 1/10th of the training and test data to simulate a partition."""
-    
-    #Load Data from File
-    #base_name = 'fish_pictures'
-    #width = 80
-    #data = joblib.load(f'{base_name}_{width}x{width}px.pkl')
-    
-    #Daten aus Docker Mount nehmen
-    data = joblib.load(f'/app')
-    
-    #Prepare data
-    X = np.array(data['data'])
-    y = np.array(data['label'])
-    
-    #Split Data in Test&Train
-    X_train, X_test, y_train, y_test = train_test_split(
-        X, 
-        y, 
-        test_size=0.2, 
-        shuffle=True,
-        random_state=42,
-    )
-
-    assert idx in range(numClients)
-    
-    
-    #Ganzes Array durch Anzahl der Clients teilen
-    partition_size = math.floor(len(X_train)/numClients)
-    #Test ist 20% der ganzen Partition
-    test_size = math.floor(partition_size/5)
-    
-    #(x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar10.load_data()
+    assert idx in range(10)
+    (x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar10.load_data()
     return (
-        X_train[idx * partition_size : (idx + 1) * partition_size],
-        y_train[idx * partition_size : (idx + 1) * partition_size],
+        x_train[idx * 5000 : (idx + 1) * 5000],
+        y_train[idx * 5000 : (idx + 1) * 5000],
     ), (
-        X_test[idx * test_size : (idx + 1) * test_size],
-        y_test[idx * test_size : (idx + 1) * test_size],
+        x_test[idx * 1000 : (idx + 1) * 1000],
+        y_test[idx * 1000 : (idx + 1) * 1000],
     )
 
 
