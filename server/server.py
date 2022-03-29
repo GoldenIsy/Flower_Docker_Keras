@@ -42,49 +42,20 @@ def main() -> None:
     )
 
     # Start Flower server for four rounds of federated learning
-    fl.server.start_server('localhost:8085', config={"num_rounds": 1}, strategy=strategy)
+    fl.server.start_server('client:8080', config={"num_rounds": 1}, strategy=strategy)
 
 
 def get_eval_fn(model):
     """Return an evaluation function for server-side evaluation."""
 
     # Load data and model here to avoid the overhead of doing it in `evaluate` itself
-    #(x_train, y_train), _ = tf.keras.datasets.cifar10.load_data()
+    (x_train, y_train), _ = tf.keras.datasets.cifar10.load_data()
 
-    
-    #Load Data from File
-    #base_name = 'fish_pictures'
-    #width = 80
-    #data = joblib.load(f'{base_name}_{width}x{width}px.pkl')
-    
-    
-    #Load Data from File
-    #pfad = 'C:\Users\Manue\Desktop\docker\
-    #base_name = 'fish_pictures'
-    #width = 80
-    #data = joblib.load(f'{base_name}_{width}x{width}px.pkl')
-    #name = 'C:\Users\Manue\Desktop\docker\fish_pictures_80x80px.pkl'
-    
-    #Daten aus Docker Mount nehmen
-    data = joblib.load(f'/app')
-    
-        #Prepare data
-    X = np.array(data['data'])
-    y = np.array(data['label'])
-    
-    #Split Data to validate
-    X_train, x_val, y_train, y_val = train_test_split(
-        X, 
-        y, 
-        test_size=0.1, 
-        shuffle=True,
-        random_state=42,
-    )
-    
+
     
     
     # Use the last 5k training examples as a validation set
-    #x_val, y_val = x_train[45000:50000], y_train[45000:50000]
+    x_val, y_val = x_train[45000:50000], y_train[45000:50000]
 
     # The `evaluate` function will be called after every round
     def evaluate(
