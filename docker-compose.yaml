@@ -1,16 +1,22 @@
 version: '3'
 services:
   server:
-    image: flwr_server_keras
     volumes:
-      - '<datset example: "\docker\fishdata.pkl">:/app'
+      - 'C:\Users\Manue\Desktop\dockerRoot\data\fishdata.pkl:/app'    
+    image: flwr_server_keras
+    build:
+      context: ./server
+      dockerfile: Dockerfile
     container_name: server
     networks:
       - flower
   client:
-    image: flwr_client_keras
     volumes:
-      - '<datset>:/app'
+      - 'C:\Users\Manue\Desktop\dockerRoot\data\fishdata.pkl:/app'
+    image: flwr_client_keras
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: client
     networks:
       - flower
